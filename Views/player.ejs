@@ -1,0 +1,425 @@
+<html>
+    <head>
+        <title><%= player.name %> </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="/css/player.css">
+        <link rel="stylesheet" href="/css/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <script>
+            $(document).ready(() => {
+                $("#tabs").tabs()
+                $('#refresh').click(() => {
+                    $('#refresh').html('PLEASE WAIT..')
+                    $('#refresh').css('pointer-events', 'none')
+                    var x = '<%= player.tag %>'
+                    fetch('http://localhost:4000/refresh/player/'+x.replace('#',''), { method : 'POST' })
+                        .then(res => res.json())
+                        .then(res => {
+                            if(res.success)
+                                window.location = 'http://localhost:4000/player/'+x.replace('#','')
+                            else
+                                $('#refresh').html('TRY AGAIN LATER')
+                        })
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="http://localhost:4000"><img id="logo" src="/stats-king.png" alt="Logo"></a>
+            <a class ="nav-item" href="http://localhost:4000/leaderboards">LEADERBOARDS</a>
+            <a class ="nav-item" href="http://localhost:4000/tournaments">TOURNAMENTS</a>
+            <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+        </div>
+        <div class="main">
+            <h2 style="text-align: center; padding-top: 30px; color: white; position: relative; left: 30px;"><a href="http://localhost:4000"><img src="/back.png" alt="back" id="back-button" title="Back"></a>PLAYER PROFILE<span id="refresh">REFRESH STATS</span></h2>
+            <div class="body">
+                <div class="name-tag">
+                    <span class="name"><%= player.name %> </span> <br/>
+                    <span class="tag"><%= player.tag %></span>
+                </div>
+                <div class="clan-info" style="text-align: center;">
+                    <span class="clan-head">CLAN</span> <br/>
+                    <% if(typeof player.clan.badgeId === 'undefined') { %> 
+                    <img src="/badges/no_clan.png" alt="clan" style="width: 30px;">
+                    <span class="clan-name" style="position: relative; bottom: 10px;">No Clan</span> <br/>
+                    <% } else { %>
+                    <img src="/badges/<%= player.clan.badgeId %>.png" alt="clan" style="width: 30px;">
+                    <span class="clan-name" style="position: relative; bottom: 10px;"><% var link = 'http://localhost:4000/clan/'+player.clan.tag.replace('#','') %><a href=<%= link %>><%= player.clan.name %></a></span> <br/>
+                    <span class="clan-tag"><%= player.clan.tag %> </span>
+                    <% } %>  
+                </div>
+                <div class="level" style="text-align: center;">
+                    <span class="level-head">LEVEL</span><br>
+                    <span class="icon-level"><%= player.expLevel %> </span>
+                </div>
+                <div class="trophies" style="text-align: center;">
+                    <span><img src="/trophy.png" alt="trophy" style="width: 70px;"></span><br>
+                <span class="trophy-count"><%= player.trophies %> <% if(typeof player.leagueStatistics !== 'undefined' && typeof player.leagueStatistics.currentSeason !== 'undefined' && typeof player.leagueStatistics.currentSeason.rank !== 'undefined') { %> | RANK : <%= player.leagueStatistics.currentSeason.rank %> <% } %></span><br>
+                    <span class="trophy-highest">HIGHEST : <%= player.bestTrophies %></span>
+                </div>
+                <div class="league" style="text-align: center;">
+                <% if((player.arena.id >= 54000012 && player.arena.id <= 54000020) || player.arena.id == 54000031) { %> 
+                    <span><img src="/leagues/<%= player.arena.id %>.png" alt="league" style="width: 80px;"></span><br>
+                    <span class="league-name"><%= player.arena.name.toUpperCase() %> </span><br>
+                    <span class="league-highest"><% if(typeof player.leagueStatistics !== 'undefined' && typeof player.leagueStatistics.bestSeason !== 'undefined' && typeof player.leagueStatistics.bestSeason.rank !== 'undefined') { %>BEST RANK : <%= player.leagueStatistics.bestSeason.rank %> <% } %></span>
+                <% } else { %> 
+                    <span><img src="/leagues/no.png" alt="league" style="width: 80px;"></span><br>
+                    <span class="league-name">No League</span>
+                <% } %> 
+                </div>
+                <div class="wl">
+                    <div class="circle" style="text-align: center;">
+                        <span style="position: relative; top: 18px">
+                        <span style="color: white; font-weight: bold; font-size: 200%;"><% var wl = player.wins/player.losses %><%= wl.toFixed(2) %></span><br>
+                        <span style="color: white;"><b>W/L RATIO</b></span><br>
+                        <span style="color: #929292; font-size: 80%;">
+                            WINS : <%= player.wins %>  <br>
+                            LOSSES : <%= player.losses %> <br>
+                            TOTAL : <%= player.battleCount %> 
+                        </span></span>
+                    </div>
+                </div>
+                <div class="time" style="text-align: center;">
+                    <img src="/time.png" alt="time-icon" style="width: 40px;transform: scale(1.2);"><br>
+                    <span style=" color: white;font-size: 110%;">TIME PLAYED</span><br>
+                    <span style="color: white; font-weight: bold; font-size: 150%;"><% var hours = (player.battleCount*3.5)/60 %><%= hours.toFixed(2) %> h</span>
+                </div>
+                <div class="donations" style="text-align: center;">
+                    <img src="/donations.png" alt="donation-icon" style="width: 40px;"><br>
+                    <span style=" color: white;font-size: 110%;">TOTAL DONATIONS</span><br>
+                    <span style="color: white; font-weight: bold; font-size: 150%;"><%= player.totalDonations %> </span>
+                </div>
+                <div class="crowns" style="text-align: center;">
+                    <img src="/crown.png" alt="crown" style="width: 30px;"><br>
+                    <span style=" color: white;font-size: 110%;">THREE CROWN WINS</span><br>
+                    <span style="color: white; font-weight: bold;font-size:150%;"><%= player.threeCrownWins %> </span>
+                </div>
+                <div class="challenge" style="text-align: center;">
+                    <img src="/challenge.png" alt="challenge" style="width: 50px;"><br>
+                    <span style="color: white;font-size: 90%;"><b>CHALLENGE STATS</b></span> <br>
+                    <span  style="color: white;font-size: 110%;">CARDS WON : <b><%= player.challengeCardsWon %> </b></span> <br>
+                    <span  style="color: white;font-size: 110%;">MAX WINS : <b><%= player.challengeMaxWins %> </b></span>
+                </div>
+                <div class="tourny" style="text-align: center;">
+                    <img src="/tournament.png" alt="tournament" style="width: 50px;"><br>
+                    <span style="color: white;font-size: 90%;"><b>TOURNAMENT STATS</b></span> <br>
+                    <span  style="color: white;font-size: 110%;">CARDS WON : <b><%= player.tournamentCardsWon %> </b></span> <br>
+                    <span  style="color: white;font-size: 110%;">BATTLE COUNT : <b><%= player.tournamentBattleCount %> </b></span>
+                </div>
+                <div class="clanwars" style="text-align: center;">
+                    <img src="/clanwars.png" alt="clanwars" style="width: 50px;"><br>
+                    <span style="color: white;font-size: 90%;"><b>CLAN WARS</b></span> <br>
+                    <span  style="color: white;font-size: 110%;">WAR DAY WINS : <b><%= player.warDayWins %> </b></span> <br>
+                    <span  style="color: white;font-size: 110%;">CARDS COLLECTED : <b><%= player.clanCardsCollected %> </b></span>
+                </div>
+            </div>
+            <div class="second" style="display: grid;">
+                <div class="arena" style="text-align: center; padding: 10px;">
+                    <% if((player.arena.id >= 54000012 && player.arena.id <= 54000020) || player.arena.id == 54000031) { %>
+                    <span style="color: white;"><b>LEGENDARY ARENA</b></span> <br> <br>
+                    <img src="/arenas/legendary.png" alt="arena" style="width: 295px;">
+                    <% } else { %>
+                        <% if(player.arena.id == 54000000) { %> 
+                            <span style="color: white;"><b>TRAINING CAMP</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000001) { %>
+                            <span style="color: white;"><b>GOBLIN STADIUM</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000002) { %> 
+                            <span style="color: white;"><b>BONE PIT</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000003) { %>
+                            <span style="color: white;"><b>BARBARIAN BOWL</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000004) { %>
+                            <span style="color: white;"><b>P.E.K.K.A.'S PLAYHOUSE</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000005) { %>
+                            <span style="color: white;"><b>SPELL VALLEY</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000006) { %>
+                            <span style="color: white;"><b>BUILDER'S WORKSHOP</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000007) { %>
+                            <span style="color: white;"><b>HOG MOUNTAIN</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000008) { %>
+                            <span style="color: white;"><b>ROYAL ARENA</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000009) { %>
+                            <span style="color: white;"><b>FROZEN PEAK</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000010) { %>
+                            <span style="color: white;"><b>JUNGLE ARENA</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000011) { %>
+                            <span style="color: white;"><b>SPOOKY TOWN</b></span> <br> <br>
+                        <% } else if(player.arena.id == 54000024) { %>
+                            <span style="color: white;"><b>ELECTRO VALLEY</b></span> <br> <br>
+                        <% } %>                         
+                    <img src="/arenas/<%= player.arena.id %>.png" alt="arena" style="width: 295px;">
+                    <% } %>  
+                </div>
+                <div class="deck" style="text-align: center; padding: 10px;">
+                    <span style="color:white;"><b>CURRENT DECK</b><br><span style="font-size: 70%;">FAVOURITE CARD : <%= player.currentFavouriteCard.name %> </span></span> <br><br>
+                    <div class="deck-grid">
+                    <% for(var i = 0; i < player.currentDeck.length; i++) { %> 
+                        <div style="color: white;padding-right: 20px;">
+                            <img src="/cards/<%= player.currentDeck[i].id %>.png" alt="card" style="width: 100px;"> <br>
+                        <span style="font-weight: bold; position: relative; bottom: 35px;text-shadow: 1px 1px 7px #000000b6;">
+                            <% if(typeof player.currentDeck[i].starLevel !== 'undefined') { %>
+                                STAR LVL. <%= player.currentDeck[i].starLevel %>     
+                            <% } else { %> 
+                            <% if(player.currentDeck[i].maxLevel == 11) { %>
+                                LVL. <%= player.currentDeck[i].level + 2 %> 
+                            <% } else if(player.currentDeck[i].maxLevel == 5) { %>
+                                LVL. <%= player.currentDeck[i].level + 8 %> 
+                            <% } else if(player.currentDeck[i].maxLevel == 8) { %> 
+                                LVL. <%= player.currentDeck[i].level + 5 %> 
+                            <% } else { %>
+                                LVL. <%= player.currentDeck[i].level %> 
+                            <% } %> 
+                            <% } %> 
+                        </span>
+                        </div>
+                    <% } %> 
+                    </div>
+                </div>
+            </div>
+			<div class="chests" style="text-align: center;">
+                <div style="font-weight: bold; color: white; font-size: 110%; margin-bottom: 20px;">UPCOMING CHESTS</div>
+                <div class="upcoming">
+                    <% for(var i = 0; i < upcoming.length; i++) { %> 
+                    <div><img src="/chests/<%= upcoming[i].name %>.png" alt="chest" style="width: 80px;"><br><span style="color: white;"><% if(upcoming[i].index==0) { %>NEXT<% } else { %>+<%= upcoming[i].index %><% } %></span></div>
+                    <% } %> 
+                </div>
+            </div>
+            <div class="battles-cards" id="tabs" style="width: 94%;margin: 0 auto;">
+                <div>
+                    <ul>
+                        <li><a href="#battles"><span><b>BATTLES</b></span></a></li>
+                        <li><a href="#cards"><span><b>CARDS</b></span></a></li>
+                    </ul>
+                    <div id="battles">
+                        <% for(var i = 0; i < log.length; i++) { %> 
+                        <div class="battle-card" <% if(log[i].team[0].crowns > log[i].opponent[0].crowns) { %> style="border: 1px solid #41ff7d;margin: 10px;" <% } else if(log[i].team[0].crowns < log[i].opponent[0].crowns) { %> style="border: 1px solid #f03434;margin: 10px;" <% } else { %>style="border: 1px solid #e9d460;margin: 10px;"<% } %>>
+                            <div class="fighter">
+                                <div style="font-weight: bold; text-align: left;"><%= log[i].team[0].name %> </div>
+                                <% if(typeof log[i].team[0].clan === 'undefined') { %>
+                                    <div><img src="/badges/no_clan.png" alt="clan" style="width: 20px;"><span style="font-size: 70%; position: relative; bottom: 8px; left: 5px;">No Clan</span></div>
+                                <% } else { %>  
+                                <div><img src="/badges/<%= log[i].team[0].clan.badgeId %>.png" alt="clan" style="width: 20px;"><span style="font-size: 70%; position: relative; bottom: 8px; left: 5px;"><%= log[i].team[0].clan.name %> </span></div>
+                                <% } %> 
+                                <div class="fighter-deck" style="text-align: left; margin-top: 10px;">
+                                    <% for(var j = 0; j < log[i].team[0].cards.length; j++) { %> 
+                                    <div><img src="/cards/<%= log[i].team[0].cards[j].id %>.png" alt="card" style="width: 50px;"></div>
+                                    <% } %> 
+                                </div>
+                                <div style="margin-top: 10px;">
+                                <img src="/trophy.png" alt="trophy" style="width: 20px;"> <span style="font-weight: bold; position: relative; bottom: 5px;"><%= log[i].team[0].startingTrophies %> </span><br><span style="font-size : 90%;"><% if(log[i].team[0].trophyChange > 0) { %> +<%= log[i].team[0].trophyChange %> <% } else { %> <%= log[i].team[0].trophyChange %> <% } %> </span>
+                                </div>
+                                <div style="margin-top: 20px; font-size: 70%; opacity: 50%;">
+                                    <%  
+                                        function time(timestamp1, timestamp2) {
+                                            var year1 = timestamp1.slice(0,4)
+                                            var year2 = timestamp2.slice(0,4)
+                                            var mo1 = timestamp1.slice(4,6)
+                                            var mo2 = timestamp2.slice(4,6)
+                                            var day1 = timestamp1.slice(6,8)
+                                            var day2 = timestamp2.slice(6,8)
+                                            var h1 = timestamp1.slice(8,10)
+                                            var h2 = timestamp2.slice(8, 10)
+                                            var m1 = timestamp1.slice(10, 12)
+                                            var m2 = timestamp2.slice(10,12)
+                                            var s1 = timestamp1.slice(12,14)
+                                            var s2 = timestamp2.slice(12,14)
+                                            var d1 = new Date(year1+'-'+mo1+'-'+day1+'T'+h1+':'+m1+':'+s1+'Z')
+                                            var d2 = new Date(year2+'-'+mo2+'-'+day2+'T'+h2+':'+m2+':'+s2+'Z')
+                                            var diff = d1 - d2
+                                            if (diff > 60e3) {
+                                                var time = Math.floor(diff/ 60e3)
+                                                var days = Math.floor(time/24/60)
+                                                var hours = Math.floor(time/60%24)
+                                                var mins = Math.floor(time%60)
+                                                if(days == 0 && hours == 0)
+                                                    return mins+' mins ago'
+                                                else if(days == 0)
+                                                    return hours+' hours '+mins+' mins ago'
+                                                else 
+                                                    return days+' days '+hours+' hours '+mins+' mins ago'
+                                            }
+                                            else {
+                                                var sec = Math.floor(diff / 1e3)
+                                                return sec+' seconds ago'
+                                            }
+                                        } 
+                                        var ago = time(new Date().toISOString().replace(/:/g,'').replace(/-/g,'').split('.')[0].replace('T',''), log[i].battleTime.split('.')[0].replace('T','')) 
+                                    %>
+                                    <%= ago %> 
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div><img src="/ladder.png" alt="ladder" style="width: 40px;"></div>
+                                vs<br>
+                                <div style="font-weight: bold; font-size: 130%;"><%= log[i].team[0].crowns %>-<%= log[i].opponent[0].crowns %></div>
+                                <div style="width: 1px; height:   170px; background-color: #44474a; margin: 0 auto;"></div>
+                            </div>
+                            <div class="fighter" style="text-align: right;">
+                                <div style="font-weight: bold; text-align: right;"><%= log[i].opponent[0].name %> </div>
+                                    <% if(typeof log[i].opponent[0].clan === 'undefined') { %>
+                                    <div><img src="/badges/no_clan.png" alt="clan" style="width: 20px;"><span style="font-size: 70%; position: relative; bottom: 8px; left: 5px;">No Clan</span></div>
+                                <% } else { %>  
+                                <div><img src="/badges/<%= log[i].opponent[0].clan.badgeId %>.png" alt="clan" style="width: 20px;"><span style="font-size: 70%; position: relative; bottom: 8px; left: 5px;"><%= log[i].opponent[0].clan.name %> </span></div>
+                                <% } %> 
+                                <div class="fighter-deck" style="text-align: right; margin-top: 10px;">
+                                    <% for(var j = 0; j < log[i].opponent[0].cards.length; j++) { %> 
+                                    <div><img src="/cards/<%= log[i].opponent[0].cards[j].id %>.png" alt="card" style="width: 50px;"></div>
+                                    <% } %> 
+                                </div>
+                                <div style="margin-top: 10px;">
+                                <img src="/trophy.png" alt="trophy" style="width: 20px;"> <span style="font-weight: bold; position: relative; bottom: 5px;"><%= log[i].opponent[0].startingTrophies %> </span><br><span style="font-size : 90%;"><% if(log[i].opponent[0].trophyChange > 0) { %> +<%= log[i].opponent[0].trophyChange %> <% } else { %> <%= log[i].opponent[0].trophyChange %> <% } %> </span>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %> 
+                    </div>
+                    <div id="cards">
+                    <div>CARDS FOUND : <b><%= player.cards.length %>/98</b><% if(typeof player.starPoints !== 'undefined') { %> STAR POINTS : <b><%= player.starPoints %></b> <% } %></div>
+                        <div class="card-player" style="margin-top: 20px;">
+                            <div class="found" style="grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;">
+                            <% for(var i = 0; i < player.cards.length; i++) { %> 
+                                <div>
+                                    <img src="/cards/<%= player.cards[i].id %>.png" alt="card" style="width: 100px;">
+                                    <div style="text-shadow: 1px 1px 7px #000000e8; position: relative; bottom: 30px;"><b>
+                                        <% if(typeof player.cards[i].starLevel !== 'undefined') { %>
+                                            STAR LVL. <%= player.cards[i].starLevel %>     
+                                        <% } else { %> 
+                                        <% if(player.cards[i].maxLevel == 11) { %>
+                                            LVL. <%= player.cards[i].level + 2 %> 
+                                        <% } else if(player.cards[i].maxLevel == 5) { %>
+                                            LVL. <%= player.cards[i].level + 8 %> 
+                                        <% } else if(player.cards[i].maxLevel == 8) { %> 
+                                            LVL. <%= player.cards[i].level + 5 %> 
+                                        <% } else { %>
+                                            LVL. <%= player.cards[i].level %> 
+                                        <% } %> 
+                                        <% } %></b><br><br>
+                                        <% if(player.cards[i].maxLevel == 11) { %>
+                                            <% if(player.cards[i].level + 2 == 3) {%>
+                                                (<%= player.cards[i].count %>/2) 
+                                            <% } else if(player.cards[i].level + 2 == 4) { %>
+                                                (<%= player.cards[i].count %>/4) 
+                                            <% } else if(player.cards[i].level + 2 == 5) { %>  
+                                                (<%= player.cards[i].count %>/10) 
+                                            <% } else if(player.cards[i].level + 2 == 6) { %>  
+                                                (<%= player.cards[i].count %>/20) 
+                                            <% } else if(player.cards[i].level + 2 == 7) { %>
+                                                (<%= player.cards[i].count %>/50)   
+                                            <% } else if(player.cards[i].level + 2 == 8) { %>
+                                                (<%= player.cards[i].count %>/100)   
+                                            <% } else if(player.cards[i].level + 2 == 9) { %> 
+                                                (<%= player.cards[i].count %>/200)  
+                                            <% } else if(player.cards[i].level + 2 == 10) { %>
+                                                (<%= player.cards[i].count %>/400)   
+                                            <% } else if(player.cards[i].level + 2 == 11) { %>  
+                                                (<%= player.cards[i].count %>/800) 
+                                            <% } else if(player.cards[i].level + 2 == 12) { %>  
+                                                (<%= player.cards[i].count %>/1000) 
+                                            <% } else if(player.cards[i].level + 2 == 13) { %>  
+                                                MAX
+                                            <% } %>   
+                                        <% } else if(player.cards[i].maxLevel == 5) { %>
+                                            <% if(player.cards[i].level + 8 == 3) {%>
+                                                (<%= player.cards[i].count %>/2) 
+                                            <% } else if(player.cards[i].level + 8 == 4) { %>
+                                                (<%= player.cards[i].count %>/4) 
+                                            <% } else if(player.cards[i].level + 8 == 5) { %>  
+                                                (<%= player.cards[i].count %>/10) 
+                                            <% } else if(player.cards[i].level + 8 == 6) { %>  
+                                                (<%= player.cards[i].count %>/20) 
+                                            <% } else if(player.cards[i].level + 8 == 7) { %>
+                                                (<%= player.cards[i].count %>/50)   
+                                            <% } else if(player.cards[i].level + 8 == 8) { %>
+                                                (<%= player.cards[i].count %>/100)   
+                                            <% } else if(player.cards[i].level + 8 == 9) { %> 
+                                                (<%= player.cards[i].count %>/2)  
+                                            <% } else if(player.cards[i].level + 8 == 10) { %>
+                                                (<%= player.cards[i].count %>/4)   
+                                            <% } else if(player.cards[i].level + 8 == 11) { %>  
+                                                (<%= player.cards[i].count %>/10) 
+                                            <% } else if(player.cards[i].level + 8 == 12) { %>  
+                                                (<%= player.cards[i].count %>/20) 
+                                            <% } else if(player.cards[i].level + 8 == 13) { %>  
+                                                MAX
+                                            <% } %> 
+                                        <% } else if(player.cards[i].maxLevel == 8) { %> 
+                                            <% if(player.cards[i].level + 5 == 3) {%>
+                                                (<%= player.cards[i].count %>/2) 
+                                            <% } else if(player.cards[i].level + 5 == 4) { %>
+                                                (<%= player.cards[i].count %>/4) 
+                                            <% } else if(player.cards[i].level + 5 == 5) { %>  
+                                                (<%= player.cards[i].count %>/10) 
+                                            <% } else if(player.cards[i].level + 5 == 6) { %>  
+                                                (<%= player.cards[i].count %>/2) 
+                                            <% } else if(player.cards[i].level + 5 == 7) { %>
+                                                (<%= player.cards[i].count %>/4)   
+                                            <% } else if(player.cards[i].level + 5 == 8) { %>
+                                                (<%= player.cards[i].count %>/10)   
+                                            <% } else if(player.cards[i].level + 5 == 9) { %> 
+                                                (<%= player.cards[i].count %>/20)  
+                                            <% } else if(player.cards[i].level + 5 == 10) { %>
+                                                (<%= player.cards[i].count %>/50)   
+                                            <% } else if(player.cards[i].level + 5 == 11) { %>  
+                                                (<%= player.cards[i].count %>/100) 
+                                            <% } else if(player.cards[i].level + 5 == 12) { %>  
+                                                (<%= player.cards[i].count %>/200) 
+                                            <% } else if(player.cards[i].level + 5 == 13) { %>  
+                                                MAX
+                                            <% } %> 
+                                        <% } else { %>
+                                            <% if(player.cards[i].level == 3) {%>
+                                                (<%= player.cards[i].count %>/10) 
+                                            <% } else if(player.cards[i].level == 4) { %>
+                                                (<%= player.cards[i].count %>/20) 
+                                            <% } else if(player.cards[i].level == 5) { %>  
+                                                (<%= player.cards[i].count %>/50) 
+                                            <% } else if(player.cards[i].level == 6) { %>  
+                                                (<%= player.cards[i].count %>/100) 
+                                            <% } else if(player.cards[i].level == 7) { %>
+                                                (<%= player.cards[i].count %>/200)   
+                                            <% } else if(player.cards[i].level == 8) { %>
+                                                (<%= player.cards[i].count %>/400)   
+                                            <% } else if(player.cards[i].level == 9) { %> 
+                                                (<%= player.cards[i].count %>/800)  
+                                            <% } else if(player.cards[i].level == 10) { %>
+                                                (<%= player.cards[i].count %>/1000)   
+                                            <% } else if(player.cards[i].level == 11) { %>  
+                                                (<%= player.cards[i].count %>/2000) 
+                                            <% } else if(player.cards[i].level == 12) { %>  
+                                                (<%= player.cards[i].count %>/5000) 
+                                            <% } else if(player.cards[i].level == 13) { %>  
+                                                MAX
+                                            <% } else if(player.cards[i].level == 1) { %> 
+                                                (<%= player.cards[i].count %>/2)
+                                            <% } else if(player.cards[i].level == 13) { %>
+                                                (<%= player.cards[i].count %>/4)
+                                            <% } %>
+                                        <% } %> 
+                                    </div>
+                                </div>
+                            <% } %> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+            <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+            <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+            <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+            <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="/Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+            <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="/twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+            <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+            <div style="justify-self: end;"><img src="/stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+            <div style="justify-self: end;"><img src="/clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+            <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+        </div>
+    </body>
+</html>

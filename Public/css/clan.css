@@ -1,0 +1,183 @@
+body {
+    font-family: Nexa;
+    margin: 0;
+    padding: 0;
+    background-color: #2c2f33;
+    color: white;
+}
+
+.navbar {
+    padding: 20px;
+    padding-left: 40px;
+}
+
+#logo {
+    height: 60px;
+    transition: all 0.1s ease-out;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    transition: all 0.2s ease-out;
+}
+
+a:hover {
+    text-shadow: 1px 1px 7px #000000b6;
+}
+
+.nav-item {
+    padding: 30px;
+    position: relative;
+    bottom: 17px;
+    left: 20px;
+    font-weight: bold;
+}
+
+.footer {
+    padding-top: 30px;
+    width: 100%;
+    background-color: #23272a;
+    height: 270px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+.footer-link {
+    font-weight: bold;
+}
+
+.footer-link:hover {
+    color:rgb(38,102,184);
+}
+
+.main {
+    width: 1200px;
+    min-height: 200px;
+    overflow: hidden;
+    background-color: #23272a;
+    margin: 30px auto;
+    border-radius: 20px;
+    padding-bottom: 40px;
+}
+
+#back-button {
+    width: 15px;
+    position: relative;
+    top: 3px;
+    right: 350px;
+    opacity: 70%;
+  }
+
+#back-button:hover {
+    opacity: 100%;
+}
+
+.body {
+	border: 1px solid #2c2f33;
+	border-radius: 15px;
+	width : 95%;
+	margin: 0 auto;
+    margin-bottom : 0px;
+}
+
+.clan-head {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 50px;
+}
+
+th, td {
+    padding:  10px 40px;
+    font-size: 80%;
+    border-bottom: 1px solid #23272a;
+}
+
+.no-war {
+    padding-bottom: 20px;
+}
+
+.collection-day {
+    padding-bottom: 20px;
+}
+
+.cd-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.cd-head-cont {
+    padding : 20px;
+    text-align: center;
+}
+
+#members {
+    margin: 0 auto;
+    width: 95%; 
+    text-align: center; 
+    padding-bottom: 20px;
+}
+
+#cd-members {
+    margin: 0 auto;
+    width: 95%; 
+    text-align: center; 
+    padding-bottom: 20px;
+}
+
+#wd-members {
+    margin: 0 auto;
+    width: 95%; 
+    text-align: center; 
+    padding-bottom: 20px;
+}
+
+.war-day {
+    padding-bottom: 30px;
+}
+
+.wd-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.wd-head-cont {
+    padding-bottom: 20px;
+}
+
+.war-log {
+    text-align: center;
+}
+
+.war-log-card {
+    border: 1px solid rgb(49, 49, 49);
+    width: 85%;
+    margin: 20px auto;
+    padding : 20px;
+    border-radius: 10px;
+}
+
+#refresh {
+    font-size: 50%;
+    cursor: pointer;
+    position: relative;
+    left: 380px;
+    background: rgb(38,102,184);
+    background: linear-gradient(90deg, rgba(38,102,184,1) 0%, rgba(82,141,255,1) 100%);
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.2s ease-out;
+}
+
+#refresh:hover {
+    -webkit-box-shadow: 3px 4px 23px 0px rgba(0,0,0,0.22);
+    -moz-box-shadow: 3px 4px 23px 0px rgba(0,0,0,0.22);
+    box-shadow: 3px 4px 23px 0px rgba(0,0,0,0.22);
+}

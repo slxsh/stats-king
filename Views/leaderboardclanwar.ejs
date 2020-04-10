@@ -1,0 +1,338 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/leaderboard-clan.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+        <script>
+            $(document).ready( () => $('#location').select2())
+            $(document).ready( () => $('#type').select2())
+            $(document).ready(() => {
+                $('#type').on('change', (e) => {
+                    window.location = 'http://localhost:4000/leaderboards?type='+$('#type').select2('data')[0].id+'&locationid='+$('#location').select2('data')[0].id
+                })
+                $('#location').on('change', (e) => {
+                    window.location = 'http://localhost:4000/leaderboards?type='+$('#type').select2('data')[0].id+'&locationid='+$('#location').select2('data')[0].id
+                })
+            })
+        </script>
+        <title>Leaderboard</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="http://localhost:4000"><img id="logo" src="./stats-king.png" alt="Logo"></a>
+            <a class ="nav-item" href="http://localhost:4000/leaderboards" style="color:rgb(38,102,184);text-shadow: 1px 1px 7px #000000b6;">LEADERBOARDS</a>
+            <a class ="nav-item" href="http://localhost:4000/tournaments">TOURNAMENTS</a>
+            <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+        </div>
+        <div class="body">
+            <h2 style="color: white ;">CLAN WARS LEADERBOARD</h2>
+            <div class="select" style="color: white;">
+                <select name="type" id="type" style="width: 150px;">
+                    <option value="clanwars">Clan Wars</option>
+                    <option value="clans">Clans</option>
+                    <option value="players">Players</option>
+                </select> &nbsp;&nbsp;
+                <select name="location" id="location" style="width: 150px;">
+                    <option value="<%= value %> "><%= location %> </option>
+                    <option value="global">Global</option>
+                    <option value="57000007">Afghanistan</option>
+                    <option value="57000008">Åland Islands</option>
+                    <option value="57000009">Albania</option>
+                    <option value="57000010">Algeria</option>
+                    <option value="57000011">American Samoa</option>
+                    <option value="57000012">Andorra</option>
+                    <option value="57000013">Angola</option>
+                    <option value="57000014">Anguilla</option>
+                    <option value="57000015">Antarctica</option>
+                    <option value="57000016">Antigua and Barbuda</option>
+                    <option value="57000017">Argentina</option>
+                    <option value="57000018">Armenia</option>
+                    <option value="57000019">Aruba</option>
+                    <option value="57000020">Ascension Island</option>
+                    <option value="57000021">Australia</option>
+                    <option value="57000022">Austria</option>
+                    <option value="57000023">Azerbaijan</option>
+                    <option value="57000024">Bahamas</option>
+                    <option value="57000025">Bahrain</option>
+                    <option value="57000026">Bangladesh</option>
+                    <option value="57000027">Barbados</option>
+                    <option value="57000028">Belarus</option>
+                    <option value="57000029">Belgium</option>
+                    <option value="57000030">Belize</option>
+                    <option value="57000031">Benin</option>
+                    <option value="57000032">Bermuda</option>
+                    <option value="57000033">Bhutan</option>
+                    <option value="57000034">Bolivia</option>
+                    <option value="57000035">Bosnia and Herzegovina</option>
+                    <option value="57000036">Botswana</option>
+                    <option value="57000037">Bouvet Island</option>
+                    <option value="57000038">Brazil</option>
+                    <option value="57000039">British Indian Ocean Territory</option>
+                    <option value="57000040">British Virgin Islands</option>
+                    <option value="57000041">Brunei</option>
+                    <option value="57000042">Bulgaria</option>
+                    <option value="57000043">Burkina Faso</option>
+                    <option value="57000044">Burundi</option>
+                    <option value="57000045">Cambodia</option>
+                    <option value="57000046">Cameroon</option>
+                    <option value="57000047">Canada</option>
+                    <option value="57000048">Canary Islands</option>
+                    <option value="57000049">Cape Verde</option>
+                    <option value="57000050">Caribbean Netherlands</option>
+                    <option value="57000051">Cayman Islands</option>
+                    <option value="57000052">Central African Republic</option>
+                    <option value="57000053">Ceuta and Melilla</option>
+                    <option value="57000054">Chad</option>
+                    <option value="57000055">Chile</option>
+                    <option value="57000056">China</option>
+                    <option value="57000057">Christmas Island</option>
+                    <option value="57000058">Cocos (Keeling) Islands</option>
+                    <option value="57000059">Colombia</option>
+                    <option value="57000060">Comoros</option>
+                    <option value="57000061">Congo (DRC)</option>
+                    <option value="57000062">Congo (Republic)</option>
+                    <option value="57000063">Cook Islands</option>
+                    <option value="57000064">Costa Rica</option>
+                    <option value="57000065">Côte d’Ivoire</option>
+                    <option value="57000066">Croatia</option>
+                    <option value="57000067">Cuba</option>
+                    <option value="57000068">Curaçao</option>
+                    <option value="57000069">Cyprus</option>
+                    <option value="57000070">Czech Republic</option>
+                    <option value="57000071">Denmark</option>
+                    <option value="57000072">Diego Garcia</option>
+                    <option value="57000073">Djibouti</option>
+                    <option value="57000074">Dominica</option>
+                    <option value="57000075">Dominican Republic</option>
+                    <option value="57000076">Ecuador</option>
+                    <option value="57000077">Egypt</option>
+                    <option value="57000078">El Salvador</option>
+                    <option value="57000079">Equatorial Guinea</option>
+                    <option value="57000080">Eritrea</option>
+                    <option value="57000081">Estonia</option>
+                    <option value="57000082">Ethiopia</option>
+                    <option value="57000083">Falkland Islands</option>
+                    <option value="57000084">Faroe Islands</option>
+                    <option value="57000085">Fiji</option>
+                    <option value="57000086">Finland</option>
+                    <option value="57000087">France</option>
+                    <option value="57000088">French Guiana</option>
+                    <option value="57000089">French Polynesia</option>
+                    <option value="57000090">French Southern Territories</option>
+                    <option value="57000091">Gabon</option>
+                    <option value="57000092">Gambia</option>
+                    <option value="57000093">Georgia</option>
+                    <option value="57000094">Germany</option>
+                    <option value="57000095">Ghana</option>
+                    <option value="57000096">Gibraltar</option>
+                    <option value="57000097">Greece</option>
+                    <option value="57000098">Greenland</option>
+                    <option value="57000099">Grenada</option>
+                    <option value="57000100">Guadeloupe</option>
+                    <option value="57000101">Guam</option>
+                    <option value="57000102">Guatemala</option>
+                    <option value="57000103">Guernsey</option>
+                    <option value="57000104">Guinea</option>
+                    <option value="57000105">Guinea-Bissau</option>
+                    <option value="57000106">Guyana</option>
+                    <option value="57000107">Haiti</option>
+                    <option value="57000108">Heard & McDonald Islands</option>
+                    <option value="57000109">Honduras</option>
+                    <option value="57000110">Hong Kong</option>
+                    <option value="57000111">Hungary</option>
+                    <option value="57000112">Iceland</option>
+                    <option value="57000113">India</option>
+                    <option value="57000114">Indonesia</option>
+                    <option value="57000115">Iran</option>
+                    <option value="57000116">Iraq</option>
+                    <option value="57000117">Ireland</option>
+                    <option value="57000118">Isle of Man</option>
+                    <option value="57000119">Israel</option>
+                    <option value="57000120">Italy</option>
+                    <option value="57000121">Jamaica</option>
+                    <option value="57000122">Japan</option>
+                    <option value="57000123">Jersey</option>
+                    <option value="57000124">Jordan</option>
+                    <option value="57000125">Kazakhstan</option>
+                    <option value="57000126">Kenya</option>
+                    <option value="57000127">Kiribati</option>
+                    <option value="57000128">Kosovo</option>
+                    <option value="57000129">Kuwait</option>
+                    <option value="57000130">Kyrgyzstan</option>
+                    <option value="57000131">Laos</option>
+                    <option value="57000132">Latvia</option>
+                    <option value="57000133">Lebanon</option>
+                    <option value="57000134">Lesotho</option>
+                    <option value="57000135">Liberia</option>
+                    <option value="57000136">Libya</option>
+                    <option value="57000137">Liechtenstein</option>
+                    <option value="57000138">Lithuania</option>
+                    <option value="57000139">Luxembourg</option>
+                    <option value="57000140">Macau</option>
+                    <option value="57000141">Macedonia (FYROM)</option>
+                    <option value="57000142">Madagascar</option>
+                    <option value="57000143">Malawi</option>
+                    <option value="57000144">Malaysia</option>
+                    <option value="57000145">Maldives</option>
+                    <option value="57000146">Mali</option>
+                    <option value="57000147">Malta</option>
+                    <option value="57000148">Marshall Islands</option>
+                    <option value="57000149">Martinique</option>
+                    <option value="57000150">Mauritania</option>
+                    <option value="57000151">Mauritius</option>
+                    <option value="57000152">Mayotte</option>
+                    <option value="57000153">Mexico</option>
+                    <option value="57000154">Micronesia</option>
+                    <option value="57000155">Moldova</option>
+                    <option value="57000156">Monaco</option>
+                    <option value="57000157">Mongolia</option>
+                    <option value="57000158">Montenegro</option>
+                    <option value="57000159">Montserrat</option>
+                    <option value="57000160">Morocco</option>
+                    <option value="57000161">Mozambique</option>
+                    <option value="57000162">Myanmar (Burma)</option>
+                    <option value="57000163">Namibia</option>
+                    <option value="57000164">Nauru</option>
+                    <option value="57000165">Nepal</option>
+                    <option value="57000166">Netherlands</option>
+                    <option value="57000167">New Caledonia</option>
+                    <option value="57000168">New Zealand</option>
+                    <option value="57000169">Nicaragua</option>
+                    <option value="57000170">Niger</option>
+                    <option value="57000171">Nigeria</option>
+                    <option value="57000172">Niue</option>
+                    <option value="57000173">Norfolk Island</option>
+                    <option value="57000174">North Korea</option>
+                    <option value="57000175">Northern Mariana Islands</option>
+                    <option value="57000176">Norway</option>
+                    <option value="57000177">Oman</option>
+                    <option value="57000178">Pakistan</option>
+                    <option value="57000179">Palau</option>
+                    <option value="57000180">Palestine</option>
+                    <option value="57000181">Panama</option>
+                    <option value="57000182">Papua New Guinea</option>
+                    <option value="57000183">Paraguay</option>
+                    <option value="57000184">Peru</option>
+                    <option value="57000185">Philippines</option>
+                    <option value="57000186">Pitcairn Islands</option>
+                    <option value="57000187">Poland</option>
+                    <option value="57000188">Portugal</option>
+                    <option value="57000189">Puerto Rico</option>
+                    <option value="57000190">Qatar</option>
+                    <option value="57000191">Réunion</option>
+                    <option value="57000192">Romania</option>
+                    <option value="57000193">Russia</option>
+                    <option value="57000194">Rwanda</option>
+                    <option value="57000195">Saint Barthélemy</option>
+                    <option value="57000196">Saint Helena</option>
+                    <option value="57000197">Saint Kitts and Nevis</option>
+                    <option value="57000198">Saint Lucia</option>
+                    <option value="57000199">Saint Martin</option>
+                    <option value="57000200">Saint Pierre and Miquelon</option>
+                    <option value="57000201">Samoa</option>
+                    <option value="57000202">San Marino</option>
+                    <option value="57000203">São Tomé and Príncipe</option>
+                    <option value="57000204">Saudi Arabia</option>
+                    <option value="57000205">Senegal</option>
+                    <option value="57000206">Serbia</option>
+                    <option value="57000207">Seychelles</option>
+                    <option value="57000208">Sierra Leone</option>
+                    <option value="57000209">Singapore</option>
+                    <option value="57000210">Sint Maarten</option>
+                    <option value="57000211">Slovakia</option>
+                    <option value="57000212">Slovenia</option>
+                    <option value="57000213">Solomon Islands</option>
+                    <option value="57000214">Somalia</option>
+                    <option value="57000215">South Africa</option>
+                    <option value="57000216">South Korea</option>
+                    <option value="57000217">South Sudan</option>
+                    <option value="57000218">Spain</option>
+                    <option value="57000219">Sri Lanka</option>
+                    <option value="57000220">St. Vincent & Grenadines</option>
+                    <option value="57000221">Sudan</option>
+                    <option value="57000222">Suriname</option>
+                    <option value="57000223">Svalbard and Jan Mayen</option>
+                    <option value="57000224">Swaziland</option>
+                    <option value="57000225">Sweden</option>
+                    <option value="57000226">Switzerland</option>
+                    <option value="57000227">Syria</option>
+                    <option value="57000228">Taiwan</option>
+                    <option value="57000229">Tajikistan</option>
+                    <option value="57000230">Tanzania</option>
+                    <option value="57000231">Thailand</option>
+                    <option value="57000232">Timor-Leste</option>
+                    <option value="57000233">Togo</option>
+                    <option value="57000234">Tokelau</option>
+                    <option value="57000235">Tonga</option>
+                    <option value="57000236">Trinidad and Tobago</option>
+                    <option value="57000237">Tristan da Cunha</option>
+                    <option value="57000238">Tunisia</option>
+                    <option value="57000239">Turkey</option>
+                    <option value="57000240">Turkmenistan</option>
+                    <option value="57000241">Turks and Caicos Islands</option>
+                    <option value="57000242">Tuvalu</option>
+                    <option value="57000243">U.S. Outlying Islands</option>
+                    <option value="57000244">U.S. Virgin Islands</option>
+                    <option value="57000245">Uganda</option>
+                    <option value="57000246">Ukraine</option>
+                    <option value="57000247">United Arab Emirates</option>
+                    <option value="57000248">United Kingdom</option>
+                    <option value="57000249">United States</option>
+                    <option value="57000250">Uruguay</option>
+                    <option value="57000251">Uzbekistan</option>
+                    <option value="57000252">Vanuatu</option>
+                    <option value="57000253">Vatican City</option>
+                    <option value="57000254">Venezuela</option>
+                    <option value="57000255">Vietnam</option>
+                    <option value="57000256">Wallis and Futuna</option>
+                    <option value="57000257">Western Sahara</option>
+                    <option value="57000258">Yemen</option>
+                    <option value="57000259">Zambia</option>
+                    <option value="57000260">Zimbabwe</option>
+                </select>
+            </div>
+            <div class="main">
+                <table align="center" style="margin-top: 20px;">
+                    <tr>
+                        <th style="font-weight: bold; color: white;width: 250px;">RANK</td>
+                        <th style="font-weight: bold; color: white;width: 250px;">CLAN</td>
+                        <th style="font-weight: bold; color: white;width: 250px;">CLAN WAR TROPHIES</td>
+                        <th style="font-weight: bold; color: white;width: 250px;">MEMBERS</td>
+                        <th style="font-weight: bold; color: white;width: 250px;">LOCATION</td>
+                    </tr>
+                    <% if(typeof clans === 'undefined') { %> 
+                        <td>ERROR</td>
+                    <% } else { %> 
+                        <% for(var i = 0; i < clans.length; i++) { %> 
+                        <tr align="center">
+                        <td style="color: white;width: 250px;"><%= clans[i].rank %> </td>
+                        <% var link = 'http://localhost:4000/clan/'+clans[i].tag.replace('#','') %>
+                        <td style="color: white;width: 250px;"><img src="./badges/<%= clans[i].badgeId %>.png" alt="clan" style="width: 20px;"><span style="position: relative; bottom: 7px; margin-left: 5px;"><a href=<%= link %> ><%= clans[i].name %></a></span></td>
+                        <td style="color: white;width: 250px;"><img src="./clanwar.png" alt="trophy" style="width: 19px;"><span style="position: relative; bottom: 2px; margin-left: 2px;"><%= clans[i].clanScore %> </span></td>
+                        <td style="color: white;width: 250px;"><%= clans[i].members%>/50</td>
+                        <td style="color: white;width: 250px;"><%= clans[i].location.name %> </td>
+                     </tr>
+                     <% } %> 
+                    <% } %> 
+                </table>
+            </div>
+        </div>
+        <div class="footer">
+            <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+            <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+            <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+            <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+            <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="./Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+            <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="./twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+            <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+            <div style="justify-self: end;"><img src="./stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+            <div style="justify-self: end;"><img src="./clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+            <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+        </div>
+    </body>
+</html>

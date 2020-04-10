@@ -1,0 +1,123 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/home.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script>
+            const changeplaceholder = () => {
+                if($('.opt').val() == 'clan')
+                    $('#bar').attr('placeholder', 'Enter Clan Tag or Name')
+                else
+                    $('#bar').attr('placeholder', "Enter Player Tag e.g. #RR90PJ") 
+            }
+            $(document).ready(() => {
+                document.getElementById('bar').addEventListener('keyup', (event) => {
+                    if(event.keyCode === 13) {
+                        event.preventDefault()
+                         document.getElementById('go').click()
+                    }
+                })
+                $('#go').click(() => {
+                    var tag = $('#bar').val()
+                    window.location = 'http://localhost:4000/search?type='+$('.opt').val()+'&tag='+tag.replace('#','').toUpperCase()
+                })
+            })
+        </script>
+        <title>Stats King</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="http://localhost:4000"><img id="logo" src="./stats-king.png" alt="Logo"></a>
+            <a class ="nav-item" href="http://localhost:4000/leaderboards">LEADERBOARDS</a>
+            <a class ="nav-item" href="http://localhost:4000/tournaments">TOURNAMENTS</a>
+            <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+        </div>
+        <div style="text-align: center;">
+            <h3 style="color: white;"><i>CLASH &nbsp; ROYALE &nbsp; STATISTICS</i></h2>
+        </div>
+        <div class="search">
+            <h2>SEARCH
+                <select class="opt" onchange="changeplaceholder()">
+                    <option value="player">PLAYER</option>
+                    <option value="clan">CLAN</option>
+                </select>
+            </h2>
+            <input id="bar" placeholder="Enter Player Tag e.g. #RR90PJ"> <br/>
+           <button type="button" id="go">GO</button>
+        </div>
+        <div class="players" style="background-color:#23272a; width: 1000px; margin: 40px auto; border-radius: 20px; padding: 5px; padding-bottom: 25px; text-align: center;">
+            <h2 style="color:white; text-align:center;">TOP PLAYERS</h2>
+            <table style="color: white; width: 90%; margin : 0 auto;">
+                <tr>
+                    <th>RANK</th>
+                    <th>NAME</th>
+                    <th>TROPHIES</th>
+                    <th>LEAGUE</th>
+                    <th>CLAN</th>
+                </tr>
+                <% if(typeof players === 'undefined') { %>
+                    <tr><td>ERROR</td></tr>
+                <% } else { %>   
+                    <% for(var i = 0; i < players.length; i++) { %> 
+                        <tr>   
+                            <td><%= players[i].rank %></td>
+                            <% var link = 'http://localhost:4000/player/'+players[i].tag.replace('#','') %>
+                            <td><a href=<%= link %> ><%= players[i].name %></a></td>
+                            <td><img src="./trophy.png" alt="trophy" style="width: 15px;"><span style="position: relative; bottom: 2px; margin-left: 2px;"><%= players[i].trophies %> </span></td>
+                            <td><img src="./leagues/<%= players[i].arena.id %>.png" alt="league" style="width: 25px;"></td>
+                            <% if(typeof players[i].clan === "undefined") { %>
+                                <td><img src="./badges/no_clan.png" alt="clan" style="width: 20px;"><span style="position: relative; bottom: 7px; margin-left: 5px;">No Clan</span></td>
+                            <% } else { %>
+                                <% link = 'http://localhost:4000/clan/'+players[i].clan.tag.replace('#', '') %> 
+                                <td><a href=<%= link %> ><img src="./badges/<%= players[i].clan.badgeId %>.png" alt="clan" style="width: 20px;"><span style="position: relative; bottom: 7px; margin-left: 5px;"><%= players[i].clan.name %></span></a></td>
+                            <% } %>
+                        </tr>
+                    <% } %> 
+                <% } %> 
+            </table>
+            <a href="http://localhost:4000/leaderboards">View all</a>
+        </div>
+        <div class="clans" style="background-color:#23272a; width: 1000px; margin: 40px auto; border-radius: 20px; padding: 5px; padding-bottom: 25px; text-align: center;">
+            <h2 style="color:white; text-align:center;">TOP CLANS</h2>
+            <table style="color: white; width: 90%; margin : 0 auto;">
+                <tr>
+                    <th>RANK</th>
+                    <th>NAME</th>
+                    <th>TROPHIES</th>
+                    <th>MEMBERS</th>
+                    <th>LOCATION</th>
+                </tr>
+                <% if(typeof clans === 'undefined') { %>
+                    <tr><td>ERROR</td></tr>
+                <% } else { %>
+                    <% for(var i = 0; i < clans.length; i++) { %>
+                        <tr>
+                            <td><%= clans[i].rank %></td>
+                            <% var link = 'http://localhost:4000/clan/'+clans[i].tag.replace('#', '') %>
+                            <td><a href=<%= link %> ><img src="./badges/<%= clans[i].badgeId %>.png" alt="clan" style="width: 20px;"><span style="position: relative; bottom: 7px; margin-left: 5px;"><%= clans[i].name %></span></a></td>
+                            <td><img src="./trophy.png" alt="trophy" style="width: 15px;"><span style="position: relative; bottom: 2px; margin-left: 2px;"><%= clans[i].clanScore %></span></td>
+                            <td><%= clans[i].members %>/50</td>
+                            <td><%= clans[i].location.name%></td>
+                        </tr>
+                    <% } %>
+                <% } %>
+            </table>
+            <a href="http://localhost:4000/leaderboards?type=clan&locationid=global">View all</a>
+        </div>
+        <div class="footer">
+            <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+            <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+            <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+            <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+            <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="./Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+            <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="./twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+            <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+            <div style="justify-self: end;"><img src="./stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+            <div style="justify-self: end;"><img src="./clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+            <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+        </div>
+    </body>
+</html>

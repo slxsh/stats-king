@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tournaments</title>
+    <link rel="stylesheet" href="/css/tournament.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(() => {
+        document.getElementById('bar').addEventListener('keyup', (event) => {
+          if(event.keyCode === 13) {
+            event.preventDefault()
+            document.getElementById('go').click()
+          }
+        })
+        $("#go").click(() => {
+          var tag = $('#bar').val()
+          window.location = 'http://localhost:4000/tournaments/search?name='+tag
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <div class="navbar">
+        <a href="http://localhost:4000"><img id="logo" src="/stats-king.png" alt="Logo"></a>
+        <a class ="nav-item" href="http://localhost:4000/leaderboards">LEADERBOARDS</a>
+        <a class ="nav-item" href="http://localhost:4000/touraments" style="color:rgb(38,102,184);text-shadow: 1px 1px 7px #000000b6;">TOURNAMENTS</a>
+        <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+    </div>
+    <div class="body">
+      <div class="search-tourn">
+        <h3>SEARCH TOURNAMENT</h3>
+        <input id="bar" placeholder="TOURNAMENT NAME"> <br/>
+        <button type="button" id="go">GO</button>
+      </div>
+      <hr style="border: none; background-color: #2c2f33; height: 1px; width: 80%;">
+      <div class="global-tourn">
+        <img src="/tournament.png" alt="Icon" style="width: 60px; margin-top: 20px;">
+        <h3>GLOBAL TOURNAMENTS</h3>
+        <% if(empty) { %> 
+        <div>
+          No global tournaments right now
+        </div>
+        <% } else { %> 
+        <% for(var i = 0; i < items.length; i++) { %> 
+        <div class="gt-card">
+          <h3><%= items[i].gameMode.name.toUpperCase() %> TOURNAMENT</h3>
+          <div class="gt-body">
+            <div class="gt-details">
+              <span class="gt-details-comp">
+                MAX LOSSES : <b><%= items[i].maxLosses %> </b>
+              </span>
+              <span class="gt-details-comp">
+                TOURNAMENT LEVEL : <b><%= items[i].tournamentLevel %> </b>
+              </span>
+              <span class="gt-details-comp">
+                MIN. LEVEL : <b><%= items[i].minExpLevel %> </b>
+              </span>
+              <% 
+                  function time(timestamp1, timestamp2) {
+                    var year1 = timestamp1.slice(0,4)
+                    var year2 = timestamp2.slice(0,4)
+                    var mo1 = timestamp1.slice(4,6)
+                    var mo2 = timestamp2.slice(4,6)
+                    var day1 = timestamp1.slice(6,8)
+                    var day2 = timestamp2.slice(6,8)
+                    var h1 = timestamp1.slice(8,10)
+                    var h2 = timestamp2.slice(8, 10)
+                    var m1 = timestamp1.slice(10, 12)
+                    var m2 = timestamp2.slice(10,12)
+                    var s1 = timestamp1.slice(12,14)
+                    var s2 = timestamp2.slice(12,14)
+                    var d1 = new Date(year1+'-'+mo1+'-'+day1+'T'+h1+':'+m1+':'+s1+'Z')
+                    var d2 = new Date(year2+'-'+mo2+'-'+day2+'T'+h2+':'+m2+':'+s2+'Z')
+                    var diff = d1 - d2
+                    if (diff > 60e3) {
+                        var time = Math.floor(diff/ 60e3)
+                        var days = Math.floor(time/24/60)
+                        var hours = Math.floor(time/60%24)
+                        var mins = Math.floor(time%60)
+                        if(days == 0 && hours == 0)
+                            return mins+' mins ago'
+                        else if(days == 0)
+                            return hours+' hours '+mins+' mins ago'
+                        else 
+                            return days+' days '+hours+' hours '+mins+' mins ago'
+                    }
+                    else {
+                        var sec = Math.floor(diff / 1e3)
+                        return sec+' seconds ago'
+                    }
+                  } 
+                var x = time(items[i].endTime, new Date().toISOString().replace(/:/g,'').replace(/-/g,'').split('.')[0].replace('T','')) 
+              %>
+              <span class="gt-details-comp">
+                <b><%= x.replace('ago', 'REMAINING') %> </b>
+              </span>
+            </div><br>
+            <b>FREE TIER REWARDS</b> <br>
+            <div class="reward-card-wrapper">
+            <% for(var j = 0; j < items[i].freeTierRewards.length; j++) { %>
+              <div class="reward-card">
+                WINS : <b><%= items[i].freeTierRewards[j].wins %> </b> <br>
+                <% if( typeof items[i].freeTierRewards[j].chest !== 'undefined') { %>
+                <b><%= items[i].freeTierRewards[j].rarity.toUpperCase() %>  CHEST</b> <br>
+                <% } else if(typeof items[i].freeTierRewards[j].resource !== 'undefined') { %>
+                  <b><%= items[i].freeTierRewards[j].type.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].freeTierRewards[j].amount %> </b> <br>
+                <% } else if(typeof items[i].freeTierRewards[j].card !== 'undefined' ) { %>
+                  <b><%= items[i].freeTierRewards[j].card.name.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].freeTierRewards[j].amount %> </b> <br>
+                <% } %>
+              </div>
+            <% } %>
+            </div>
+            <b style="color: #D4AF37;">BONUS TIER REWARDS</b> <br>
+            <div class="reward-card-wrapper">
+              <% for(var j = 0; j < items[i].milestoneRewards.length; j++) { %>
+                <div class="reward-card">
+                  WINS : <b><%= items[i].milestoneRewards[j].wins %> </b> <br>
+                  <% if( typeof items[i].milestoneRewards[j].chest !== 'undefined') { %>
+                  <b><%= items[i].milestoneRewards[j].rarity.toUpperCase() %>  CHEST</b> <br>
+                  <% } else if(typeof items[i].milestoneRewards[j].resource !== 'undefined') { %>
+                    <b><%= items[i].milestoneRewards[j].type.toUpperCase() %> </b> <br>
+                    AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
+                  <% } else if(typeof items[i].milestoneRewards[j].card !== 'undefined' ) { %>
+                    <b><%= items[i].milestoneRewards[j].card.name.toUpperCase() %> </b> <br>
+                    AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
+                  <% } %>
+                </div>
+              <% } %>
+            </div>
+            <b>TOP <%= items[i].maxTopRewardRank %>  RANK REWARDS</b> <br>
+            <div class="reward-card-wrapper">
+              <% for(var j = 0; j < items[i].topRankReward.length; j++) { %>
+                <div class="reward-card">
+                  WINS : <b><%= items[i].topRankReward[j].wins %> </b> <br>
+                  <% if( typeof items[i].topRankReward[j].chest !== 'undefined') { %>
+                  <b><%= items[i].topRankReward[j].rarity.toUpperCase() %>  CHEST</b> <br>
+                  <% } else if(typeof items[i].topRankReward[j].resource !== 'undefined') { %>
+                    <b><%= items[i].topRankReward[j].type.toUpperCase() %> </b> <br>
+                    AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
+                  <% } else if(typeof items[i].topRankReward[j].card !== 'undefined' ) { %>
+                    <b><%= items[i].topRankReward[j].card.name.toUpperCase() %> </b> <br>
+                    AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
+                  <% } %>
+                </div>
+              <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %> 
+        <% } %> 
+      </div>
+    </div>
+    <div class="footer">
+        <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+        <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+        <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+        <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+        <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="/Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+        <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="/twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+        <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+        <div style="justify-self: end;"><img src="/stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+        <div style="justify-self: end;"><img src="/clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+        <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+    </div>
+  </body>
+</html>

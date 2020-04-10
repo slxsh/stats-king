@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Tournaments</title>
+        <link rel="stylesheet" href="/css/tournysearch.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/css/jquery-ui-clan.css">
+        <script>
+            $(document).ready(() => {
+                $('#members').accordion({
+                    collapsible : true,
+                    heightStyle : "content",
+                    active : false
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="http://localhost:4000"><img id="logo" src="/stats-king.png" alt="Logo"></a>
+            <a class ="nav-item" href="http://localhost:4000/leaderboards">LEADERBOARDS</a>
+            <a class ="nav-item" href="http://localhost:4000/tournaments" style="color:rgb(38,102,184);text-shadow: 1px 1px 7px #000000b6;">TOURNAMENTS</a>
+            <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+        </div>
+        <div class="body">
+            <h3>SEARCH RESULTS FOR '<%= name %> '</h3>
+            <% if(empty) { %>
+                <div style="text-align: center;">No results found</div>
+            <% } else { %>
+                <% for(var i = 0; i < tournys.length; i++) { %> 
+                <div class="result-card">
+                    <img src="/tournament.png" alt="icon" style="width: 50px;">
+                    <div><b><%= tournys[i].name %> </b></div>
+                    <div><%= tournys[i].description %> </div>
+                    <div class="tourn-details">
+                        <div style="text-align: left; padding-left: 20px;">
+                            <div>GAMEMODE ID : <B><%= tournys[i].gameMode.id %> </B></div>
+                            <div>STATUS : <B><%= tournys[i].status.toUpperCase() %> </B></div>
+                            <div>TAG : <b><%= tournys[i].tag %> </b></div>
+                            <div>TYPE : <B><%= tournys[i].type.toUpperCase() %> </B></div>
+                        </div>
+                        <div style="text-align: right; padding-right: 20px;">
+                            <div>PLAYERS : <B><%= tournys[i].capacity %>/<%= tournys[i].maxCapacity %></B></div>
+                            <div>LENGTH : <b><%= tournys[i].duration/3600 %> h</b></div>
+                            <div>LEVEL CAP : <b><%= tournys[i].levelCap %> </b></div>
+                            <% var link = 'http://localhost:4000/player/'+tournys[i].creatorTag.replace('#','') %> 
+                            <div>CREATOR TAG : <a href=<%= link %> ><b><%= tournys[i].creatorTag %> </b></a></div>
+                        </div>
+                    </div>
+                </div>
+                <% } %> 
+            <% } %>   
+        </div>
+        <div class="footer">
+            <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+            <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+            <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+            <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+            <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="/Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+            <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="/twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+            <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+            <div style="justify-self: end;"><img src="/stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+            <div style="justify-self: end;"><img src="/clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+            <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+        </div>
+    </body>
+</html>

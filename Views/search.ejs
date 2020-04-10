@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/search.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <title>Search Results</title>
+    </head>
+    <body>
+        <div class="navbar">
+            <a href="http://localhost:4000"><img id="logo" src="./stats-king.png" alt="Logo"></a>
+            <a class ="nav-item" href="http://localhost:4000/leaderboards">LEADERBOARDS</a>
+            <a class ="nav-item" href="#">TOURNAMENTS</a>
+            <a class ="nav-item" href="http://localhost:4000/about">ABOUT</a>
+        </div>
+        <div class="main">
+        <h2 style="text-align: center;">Search Results<% if(typeof text !== 'undefined') { %> for '<%= text %>' <% } %> </h2>
+            <hr style="background-color: #2c2f33; border: none; width: 80%; height: 1px; margin-bottom: 20px;">
+            <% if(!found) { %> 
+            <div style="text-align: center;">
+                - No Results Found - <br> Either you entered invalid Tag/Name or Clash Royale API is under maintenence.
+            </div>
+        <% } else { %>
+            <% for(var i = 0; i < results.length; i++) { %>  
+            <% var link = 'http://localhost:4000/clan/'+results[i].tag.replace('#','') %> 
+            <a href=<%= link %> >
+                <div class="clan-card">
+                    <div style="text-align: center;">
+                        <img src="./badges/<%= results[i].badgeId %>.png" alt="Badge" style="width: 50px;"><span style="font-weight: bold; font-size: 130%;position: relative; bottom: 24px; left: 10px;"><%= results[i].name %> </span>
+                    </div>
+                    <div>
+                        LOCATION : <b><%= results[i].location.name %> </b> <br>
+                        MEMBERS : <b><%= results[i].members%>/50</b> <br>
+                        TROPHIES : <B><%= results[i].clanScore %></B>
+                    </div>
+                </div>
+            </a>
+        <% } %> 
+        <% } %> 
+        </div>
+        <div class="footer">
+            <div style="grid-row: 1/2; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000" class="footer-link">HOME</a></div>
+            <div style="grid-row: 2/3; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/tournaments" class="footer-link">TOURNAMENTS</a></div>
+            <div style="grid-row: 3/4; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/leaderboards" class="footer-link">LEADERBOARDS</a></div>
+            <div style="grid-row: 4/5; grid-column: 1/2;margin-left: 60px;"><a href="http://localhost:4000/about" class="footer-link">ABOUT</a></div>
+            <div style="grid-row: 1/2; grid-column: 2/3;" title="Discord"><a href="#"><img src="./Discord-Logo-White.png" alt="discord" style="width: 35px;"></a></div>
+            <div style="grid-row: 2/3; grid-column: 2/3;" title="Twitter"><a href="#"><img src="./twitter-icon.png" alt="twitter" style="width: 35px;"></a></div>
+            <div style="grid-row: 3/4; grid-column: 2/3;" title="Email"><a href="#" style="font-size: 30px;">@</a></div>
+            <div style="justify-self: end;"><img src="./stats-king.png" alt="Logo" style="width: 60px; margin-right: 70px;"></div>
+            <div style="justify-self: end;"><img src="./clash.png" alt="clash royale logo" style="width: 60px;margin-right: 70px; transform: scale(2);"></div>
+            <div style="grid-row: 5/6; grid-column: 1/2;margin-left: 60px;font-size: 80%;">This website isn't endorsed, affiliated or sponsored by Supercell.</div>
+        </div>
+    </body>
+</html>
