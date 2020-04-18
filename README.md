@@ -30,6 +30,9 @@ This website uses official Clash Royale API to fetch stats. Website contains the
 
 ## Getting Started
 * Get an API Token from [Clash Royale website](https://developer.clashroyale.com/#/login)
+* Make a database named 'stats-king' and make the following collections
+
+![db](https://i.gyazo.com/d51cb4b1d0a65fd734699406ee5badb2.png)
 * Make .env file in root directory and paste this inside
 ``` 
 TOKEN=api-token-here 
