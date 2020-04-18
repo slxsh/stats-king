@@ -44,6 +44,7 @@ npm start
 ``` 
 
 ## Screenshots
+(Perspective has been changed for screenshots)
 ![home](https://imgur.com/5tmZ5Bx.png)
 ![leaderboards](https://imgur.com/vLu2OZe.png)
 ![clan](https://imgur.com/uD4xNbY.png)
