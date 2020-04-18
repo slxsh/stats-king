@@ -48,7 +48,7 @@
         <% } else { %> 
         <% for(var i = 0; i < items.length; i++) { %> 
         <div class="gt-card">
-          <h3><%= items[i].gameMode.name.toUpperCase() %> TOURNAMENT</h3>
+          <h3><%= items[i].title.toUpperCase() %></h3>
           <div class="gt-body">
             <div class="gt-details">
               <span class="gt-details-comp">
@@ -106,11 +106,15 @@
               <div class="reward-card">
                 WINS : <b><%= items[i].freeTierRewards[j].wins %> </b> <br>
                 <% if( typeof items[i].freeTierRewards[j].chest !== 'undefined') { %>
-                <b><%= items[i].freeTierRewards[j].rarity.toUpperCase() %>  CHEST</b> <br>
+                <b><%= items[i].freeTierRewards[j].chest.toUpperCase()%></b> <br>
+                <b>CHEST</b><br>
                 <% } else if(typeof items[i].freeTierRewards[j].resource !== 'undefined') { %>
-                  <b><%= items[i].freeTierRewards[j].type.toUpperCase() %> </b> <br>
+                  <b><%= items[i].freeTierRewards[j].resource.toUpperCase() %> </b> <br>
                   AMOUNT : <b><%= items[i].freeTierRewards[j].amount %> </b> <br>
-                <% } else if(typeof items[i].freeTierRewards[j].card !== 'undefined' ) { %>
+                <% } else if(items[i].freeTierRewards[j].type == 'tradeToken' ) { %>
+                  <b><%= items[i].freeTierRewards[j].rarity.toUpperCase() %> TOKEN</b> <br>
+                  AMOUNT : <b><%= items[i].freeTierRewards[j].amount %> </b> <br>
+                <% } else if(typeof items[i].freeTierRewards[j].card !== 'undefined'){ %>
                   <b><%= items[i].freeTierRewards[j].card.name.toUpperCase() %> </b> <br>
                   AMOUNT : <b><%= items[i].freeTierRewards[j].amount %> </b> <br>
                 <% } %>
@@ -122,15 +126,19 @@
               <% for(var j = 0; j < items[i].milestoneRewards.length; j++) { %>
                 <div class="reward-card">
                   WINS : <b><%= items[i].milestoneRewards[j].wins %> </b> <br>
-                  <% if( typeof items[i].milestoneRewards[j].chest !== 'undefined') { %>
-                  <b><%= items[i].milestoneRewards[j].rarity.toUpperCase() %>  CHEST</b> <br>
-                  <% } else if(typeof items[i].milestoneRewards[j].resource !== 'undefined') { %>
-                    <b><%= items[i].milestoneRewards[j].type.toUpperCase() %> </b> <br>
-                    AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
-                  <% } else if(typeof items[i].milestoneRewards[j].card !== 'undefined' ) { %>
-                    <b><%= items[i].milestoneRewards[j].card.name.toUpperCase() %> </b> <br>
-                    AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
-                  <% } %>
+                <% if( typeof items[i].milestoneRewards[j].chest !== 'undefined') { %>
+                <b><%= items[i].milestoneRewards[j].chest.toUpperCase()%></b> <br>
+                <b>CHEST</b><br>
+                <% } else if(typeof items[i].milestoneRewards[j].resource !== 'undefined') { %>
+                  <b><%= items[i].milestoneRewards[j].resource.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
+                <% } else if(items[i].milestoneRewards[j].type == 'tradeToken' ) { %>
+                  <b><%= items[i].milestoneRewards[j].rarity.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
+                <% } else if(typeof items[i].milestoneRewards[j].card !== 'undefined'){ %>
+                  <b><%= items[i].milestoneRewards[j].card.name.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].milestoneRewards[j].amount %> </b> <br>
+                <% } %>
                 </div>
               <% } %>
             </div>
@@ -138,16 +146,19 @@
             <div class="reward-card-wrapper">
               <% for(var j = 0; j < items[i].topRankReward.length; j++) { %>
                 <div class="reward-card">
-                  WINS : <b><%= items[i].topRankReward[j].wins %> </b> <br>
-                  <% if( typeof items[i].topRankReward[j].chest !== 'undefined') { %>
-                  <b><%= items[i].topRankReward[j].rarity.toUpperCase() %>  CHEST</b> <br>
-                  <% } else if(typeof items[i].topRankReward[j].resource !== 'undefined') { %>
-                    <b><%= items[i].topRankReward[j].type.toUpperCase() %> </b> <br>
-                    AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
-                  <% } else if(typeof items[i].topRankReward[j].card !== 'undefined' ) { %>
-                    <b><%= items[i].topRankReward[j].card.name.toUpperCase() %> </b> <br>
-                    AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
-                  <% } %>
+                <% if( typeof items[i].topRankReward[j].chest !== 'undefined') { %>
+                <b><%= items[i].topRankReward[j].chest.toUpperCase()%></b> <br>
+                <b>CHEST</b><br>
+                <% } else if(typeof items[i].topRankReward[j].resource !== 'undefined') { %>
+                  <b><%= items[i].topRankReward[j].resource.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
+                <% } else if(items[i].topRankReward[j].type == 'tradeToken' ) { %>
+                  <b><%= items[i].topRankReward[j].rarity.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
+                <% } else if(typeof items[i].topRankReward[j].card !== 'undefined'){ %>
+                  <b><%= items[i].topRankReward[j].card.name.toUpperCase() %> </b> <br>
+                  AMOUNT : <b><%= items[i].topRankReward[j].amount %> </b> <br>
+                <% } %>
                 </div>
               <% } %>
               </div>
